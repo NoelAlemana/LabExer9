@@ -170,55 +170,60 @@ const EncodingVisualizer = () => {
         Generate Signal
       </button>
       <div style={{ width: '100%', height: '400px' }}>
-        <Line
-          data={chartData}
-          options={{
-            scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: 'Time (t)',
-                },
-                grid: {
-                  color: 'black',
-                  lineWidth: 1,
-                  borderDash: [5, 5],
-                },
-                ticks: {
-                  stepSize: encodingType === 'Manchester' || encodingType === 'Differential Manchester' ? 0.5 : 1,
-                  callback: function(value) {
-                    // Only show labels for even integers, and divide them by 2 for display
-                    if (Number.isInteger(value) && value % 2 === 0) {
-                      return value / 2;
-                    }
-                    return ''; // Hide other values
-                  },
-                },
-                
-              },
-              y: {
-                title: {
-                  display: true,
-                  text: 'Volts (V)',
-                },
-                min: -5,
-                max: 5,
-                grid: {
-                  color: 'black',
-                  lineWidth: 1,
-                },
-                ticks: {
-                  stepSize: 1,
-                },
-              },
-            },
-            plugins: {
-              legend: {
-                position: 'top',
-              },
-            },
-          }}
-        />
+      <Line
+  data={chartData}
+  options={{
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Time (t)',
+        },
+        grid: {
+          color: 'black',
+          lineWidth: 1,
+          borderDash: [5, 5],
+        },
+        ticks: {
+          stepSize: encodingType === 'Manchester' || encodingType === 'Differential Manchester' ? 0.5 : 1,
+          callback: function(value) {
+            if (encodingType === 'Manchester' || encodingType === 'Differential Manchester') {
+              // Show labels for even integers only, and divide them by 2 for display
+              if (Number.isInteger(value) && value % 2 === 0) {
+                return value / 2;
+              }
+              return ''; // Hide other values
+            } else {
+              // For other encoding types, show the value as is
+              return value;
+            }
+          },
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Volts (V)',
+        },
+        min: -5,
+        max: 5,
+        grid: {
+          color: 'black',
+          lineWidth: 1,
+        },
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+  }}
+/>
+
       </div>
     </div>
   );
