@@ -12,7 +12,7 @@ const EncodingVisualizer = () => {
   const generateChartData = (dataPoints) => {
     // Generate x-axis labels, incrementing by 0.5 but showing only integer labels
     const labels = Array.from({ length: dataPoints.length }, (_, index) => 
-      encodingType === 'Manchester' || encodingType === 'Differential Manchester' ? index * 0.5 : index + 1
+      encodingType === 'Manchester' || encodingType === 'Differential Manchester' ? index * 0.5 : index +1
     );
 
     return {
@@ -187,9 +187,14 @@ const EncodingVisualizer = () => {
                 ticks: {
                   stepSize: encodingType === 'Manchester' || encodingType === 'Differential Manchester' ? 0.5 : 1,
                   callback: function(value) {
-                    return Number.isInteger(value) ? value : '';
+                    // Only show labels for even integers, and divide them by 2 for display
+                    if (Number.isInteger(value) && value % 2 === 0) {
+                      return value / 2;
+                    }
+                    return ''; // Hide other values
                   },
                 },
+                
               },
               y: {
                 title: {
